@@ -1,7 +1,9 @@
 "use client";
+import axios from "axios";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 
 const registerScheme = yup.object().shape({
@@ -23,10 +25,7 @@ interface IRegForm {
 // interface IProps {
 //   onReload: () => void;
 // }
-const regUser = async (values: IRegForm, actions: FormikHelpers<IRegForm>) => {
-  try {
-  } catch (error) {}
-};
+
 export default function RegisterForm() {
   const initialValues: IRegForm = {
     email: "",
@@ -35,6 +34,22 @@ export default function RegisterForm() {
     username: "",
   };
   const router = useRouter();
+  const regUser = async (
+    values: IRegForm,
+    actions: FormikHelpers<IRegForm>
+  ) => {
+    try {
+      await axios.post("http://localhost:8000/api/users", values);
+      actions.resetForm();
+      toast.success("register success!");
+      router.push("/");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error)
+      toast.error(error.response?.data?.message || "register failed");
+    }
+  };
+
   return (
     <div>
       <Formik

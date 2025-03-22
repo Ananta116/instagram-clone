@@ -16,13 +16,14 @@ interface ILogForm {
 // interface IProps {
 //   onReload: () => void;
 // }
-const logUser = async (values: ILogForm, actions: FormikHelpers<ILogForm>) => {
-  try {
-  } catch (error) {}
-};
+
 export default function LoginForm() {
   const initialValues: ILogForm = { login: "", password: "" };
   const router = useRouter();
+  const logUser = async (values: ILogForm, actions: FormikHelpers<ILogForm>) => {
+    try {
+    } catch (error) {}
+  };
   return (
     <div>
       <Formik
