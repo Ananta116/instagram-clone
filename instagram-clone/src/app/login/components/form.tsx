@@ -1,7 +1,9 @@
 "use client";
+import axios from "axios";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 
 const loginScheme = yup.object().shape({
@@ -20,9 +22,20 @@ interface ILogForm {
 export default function LoginForm() {
   const initialValues: ILogForm = { login: "", password: "" };
   const router = useRouter();
-  const logUser = async (values: ILogForm, actions: FormikHelpers<ILogForm>) => {
+  const logUser = async (
+    values: ILogForm,
+    actions: FormikHelpers<ILogForm>
+  ) => {
     try {
-    } catch (error) {}
+      await axios.post("http://localhost:8000/api/auth/login", values);
+      actions.resetForm();
+      toast.success("Login Successfull");
+      router.push("/")
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Login Failed");
+    }
   };
   return (
     <div>
@@ -69,14 +82,21 @@ export default function LoginForm() {
                     >
                       {isSubmitting ? "loading" : "Log in"}
                     </button>
-                    <p className="text-[15px] text-center text-gray-300">Forget Password?</p>
+                    <p className="text-[15px] text-center text-gray-300">
+                      Forget Password?
+                    </p>
                   </div>
                 </div>
               </div>
               <div className="border border-slate-500/10 mt-[25px] ml-[-100px] shadow-md max-sm:ml-0 sm:ml-0 md:ml-[-100px] md:mr-[50px]">
                 <div className="text-black flex justify-center items-center gap-3 p-3">
                   <p>Belum punya akun?</p>
-                  <p onClick={()=> router.push("/register")} className="font-bold text-sky-700 hover:cursor-pointer">Buat Akun</p>
+                  <p
+                    onClick={() => router.push("/register")}
+                    className="font-bold text-sky-700 hover:cursor-pointer"
+                  >
+                    Buat Akun
+                  </p>
                 </div>
               </div>
             </Form>

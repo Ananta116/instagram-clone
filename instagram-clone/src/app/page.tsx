@@ -2,6 +2,7 @@ import Sidemenu from "./components/menu";
 // import InstagramStories from "./components/storie";
 import Wrapper from "./components/wrapper";
 import InstagramPost, { IPost } from "./components/post";
+import CreatePost from "./components/create";
 
 export default async function Home() {
   const res = await fetch("http://localhost:8000/api/posts");
@@ -18,7 +19,7 @@ export default async function Home() {
               return (
                 <div key={item.id}>
                   <InstagramPost
-                  id={item.id}
+                    id={item.id}
                     user={item.user}
                     createdAt={item.createdAt}
                     imageUrl={item.imageUrl}
@@ -30,6 +31,7 @@ export default async function Home() {
           </div>
         </Wrapper>
       </div>
+      <CreatePost />
     </div>
   );
 }

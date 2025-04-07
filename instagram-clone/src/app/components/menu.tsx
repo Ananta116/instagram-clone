@@ -8,7 +8,7 @@ import { CgProfile } from "react-icons/cg";
 
 export default function Sidemenu() {
   return (
-      <div role="menu" className="border shadow-md w-[300px] h-screen sticky top-0">
+      <div role="menu" className=" shadow-md w-[300px] h-screen sticky top-0">
         <Image
           className="w-[150px] mt-[50px] ml-[30px]"
           src={"/images.png"}

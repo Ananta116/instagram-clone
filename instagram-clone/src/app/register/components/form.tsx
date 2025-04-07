@@ -39,7 +39,7 @@ export default function RegisterForm() {
     actions: FormikHelpers<IRegForm>
   ) => {
     try {
-      await axios.post("http://localhost:8000/api/users", values);
+      await axios.post("http://localhost:8000/api/auth", values);
       actions.resetForm();
       toast.success("register success!");
       router.push("/");
