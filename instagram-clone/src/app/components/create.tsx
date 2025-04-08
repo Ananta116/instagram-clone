@@ -7,7 +7,7 @@ export default function CreatePost(){
         <div>
             <button 
             onClick={() => router.push("/createpost")}
-            className="bg-sky-400 shadow-md w-[100px] h-[50px] rounded-md mt-[50px] ml-[100px] hover:cursor-pointer hover:bg-sky-200">
+            className="bg-pink-600 shadow-md w-[100px] h-[50px] rounded-md mt-[10px] hover:cursor-pointer hover:bg-pink-400">
                 <p>CreatePost</p>
             </button>
         </div>

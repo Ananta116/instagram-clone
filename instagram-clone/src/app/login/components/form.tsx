@@ -1,18 +1,20 @@
 "use client";
-import axios from "axios";
+
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+
 import * as yup from "yup";
 
 const loginScheme = yup.object().shape({
-  login: yup.string().required("Please Fill the Username"),
+  email: yup.string().required("Please Fill the Email"),
   password: yup.string().required("Please Fill The Password"),
 });
 
 interface ILogForm {
-  login: string;
+  email: string;
   password: string;
 }
 // interface IProps {
@@ -20,17 +22,22 @@ interface ILogForm {
 // }
 
 export default function LoginForm() {
-  const initialValues: ILogForm = { login: "", password: "" };
+  const initialValues: ILogForm = { email: "", password: "" };
   const router = useRouter();
   const logUser = async (
     values: ILogForm,
     actions: FormikHelpers<ILogForm>
   ) => {
     try {
-      await axios.post("http://localhost:8000/api/auth/login", values);
+      await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirectTo: "/",
+      });
+      console.log(values)
       actions.resetForm();
       toast.success("Login Successfull");
-      router.push("/")
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
@@ -60,12 +67,12 @@ export default function LoginForm() {
                   </div>
                   <div className="flex flex-col gap-5">
                     <Field
-                      name="login"
+                      name="email"
                       className="border border-slate-500/5 w-[300px] text-black rounded-md shadow-md h-[50px] p-5 max-sm:w-[250px] sm:w-[250px] md:w-[300px]"
                       placeholder="username or email"
                     />
-                    {touched.login && errors.login ? (
-                      <div className="text-red-500">{errors.login}</div>
+                    {touched.email && errors.email ? (
+                      <div className="text-red-500">{errors.email}</div>
                     ) : null}
                     <Field
                       name="password"

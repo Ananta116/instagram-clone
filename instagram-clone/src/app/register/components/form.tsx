@@ -115,6 +115,7 @@ export default function RegisterForm() {
                     </p>
                     <button
                       type="submit"
+                      onSubmit={()=> router.push("/login")}
                       className="bg-sky-800 text-white w-[300px] h-[50px] rounded-md shadow-md hover:cursor-pointer hover:bg-sky-500 max-sm:w-[250px] sm:w-[250px] md:w-[320px]"
                     >
                       {isSubmitting ? "loading" : "Register"}

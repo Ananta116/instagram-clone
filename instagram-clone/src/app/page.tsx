@@ -1,13 +1,13 @@
 import Sidemenu from "./components/menu";
-// import InstagramStories from "./components/storie";
 import Wrapper from "./components/wrapper";
 import InstagramPost, { IPost } from "./components/post";
 import CreatePost from "./components/create";
+import Profile from "./components/profile";
 
 export default async function Home() {
   const res = await fetch("http://localhost:8000/api/posts");
   const data: { posts: IPost[] } = await res.json();
-  console.log(data);
+
   return (
     <div className="flex">
       <Sidemenu />
@@ -31,7 +31,10 @@ export default async function Home() {
           </div>
         </Wrapper>
       </div>
-      <CreatePost />
+      <div className="flex flex-col">
+        <Profile />
+        <CreatePost />
+      </div>
     </div>
   );
 }
