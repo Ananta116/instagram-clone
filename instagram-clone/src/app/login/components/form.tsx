@@ -1,5 +1,7 @@
 "use client";
 
+import axios from "@/lib/axios";
+import { AxiosError } from "axios";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
@@ -29,19 +31,26 @@ export default function LoginForm() {
     actions: FormikHelpers<ILogForm>
   ) => {
     try {
+      const { data } = await axios.post("/auth/login", values);
+      const user = data.data;
+
       await signIn("credentials", {
-        email: values.email,
-        password: values.password,
         redirectTo: "/",
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        fullname: user.fullname,
+        avatar: user.avatar ?? "",
+        accessToken: data.access_token,
       });
-      console.log(values)
+      console.log(values);
       actions.resetForm();
       toast.success("Login Successfull");
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
-      toast.error(error.response?.data?.message || "Login Failed");
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || "Login Failed");
+      }
     }
   };
   return (

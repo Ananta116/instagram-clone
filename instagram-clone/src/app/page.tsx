@@ -3,9 +3,15 @@ import Wrapper from "./components/wrapper";
 import InstagramPost, { IPost } from "./components/post";
 import CreatePost from "./components/create";
 import Profile from "./components/profile";
+import { auth } from "@/lib/auth";
 
 export default async function Home() {
-  const res = await fetch("http://localhost:8000/api/posts");
+  const user = await auth();
+  const res = await fetch("http://localhost:8000/api/posts", {
+    headers: {
+      Authorization: `Bearer ${user?.accessToken}`,
+    },
+  });
   const data: { posts: IPost[] } = await res.json();
 
   return (
@@ -24,6 +30,8 @@ export default async function Home() {
                     createdAt={item.createdAt}
                     imageUrl={item.imageUrl}
                     caption={item.caption}
+                    likeCount={item.likeCount}
+                    liked={item.liked}
                   />
                 </div>
               );

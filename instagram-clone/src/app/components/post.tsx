@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { FaRegHeart, FaRegCommentAlt } from "react-icons/fa";
-import { RiTelegram2Line } from "react-icons/ri";
+import { convertTime } from "../utils/time";
+import ActionButton from "./action";
 
 export interface IPost {
   id: number;
@@ -8,6 +8,9 @@ export interface IPost {
   imageUrl: string;
   createdAt: string;
   user: IUsers;
+  liked: boolean;
+  likeCount: number;
+  postId: number;
 }
 export interface IUsers {
   id: number;
@@ -20,6 +23,9 @@ export default function InstagramPost({
   caption,
   imageUrl,
   createdAt,
+  likeCount,
+  liked,
+  postId,
 }: IPost) {
   return (
     <div>
@@ -27,14 +33,14 @@ export default function InstagramPost({
         <div className="flex items-center gap-2">
           <Image
             className="rounded-full w-[50px] h-[50px]"
-            src={user.avatar}
+            src={user.avatar || "/content2.png"}
             alt={user.username}
             width={50}
             height={50}
           />
           <p className="text-black text-[15px] font-bold">{user.username}</p>
           <p className="text-[15px] text-gray-300 subpixel-antialiased">
-            {createdAt}
+            {convertTime(createdAt)}
           </p>
         </div>
         <Image
@@ -44,11 +50,7 @@ export default function InstagramPost({
           width={500}
           height={500}
         />
-        <div className="flex gap-3 mt-[10px]">
-          <FaRegHeart color="black" size={20} />
-          <FaRegCommentAlt color="black" size={20} />
-          <RiTelegram2Line color="black" size={20} />
-        </div>
+        <ActionButton likesCount={likeCount} liked={liked} postId={postId} />
         <div className="flex gap-1 mt-[10px]">
           <p className="font-bold text-black subpixel-antialiased">
             {user.username}
